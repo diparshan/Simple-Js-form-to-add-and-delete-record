@@ -1,65 +1,68 @@
 const form = document.getElementById('addForm');
-const listItem = document.getElementById('items');
+const itemList = document.getElementById('items');
 const filter = document.getElementById('filter');
 
-//adding event to form
+//adding event listner to form 
 form.addEventListener('submit', addItem);
-//deleting li
-listItem.addEventListener('click', removeItem);
-//adding event to filter(in search)
+//adding event listner to delete item
+itemList.addEventListener('click', removeItem);
+//adding event listner to search
 filter.addEventListener('keyup', searchItem);
 
-
-//fucntion for addItem
-function addItem(e){
+//addItem function
+function addItem(e) {
   e.preventDefault();
 
-  //getting value from the submit
+  //getting value from the submit area
   const newItem = document.getElementById('item').value;
 
-  //creating new li element
+  //creating li element
   const li = document.createElement('li');
   //adding class to li element
   li.className = 'list-group-item';
-
-  //adding value to the li element
+  //adding text to the li element
   li.appendChild(document.createTextNode(newItem));
 
-  //creating button element
+  //creating button
   const deleteBtn = document.createElement('button');
   //adding class to button
   deleteBtn.className = 'btn btn-danger btn-sm float-right delete';
-
-  //adding text to the delete button
+  //inserting text to delete button
   deleteBtn.appendChild(document.createTextNode('X'));
 
-  //adding button to the li
+  //adding button to the li element
   li.appendChild(deleteBtn);
-  
-  //adding li to the ul
-  listItem.appendChild(li);
-}
 
-//fucntion for removeItem
-function removeItem(e){
-  if (e.target.classList.contains('delete')){
-    if (confirm("Are you sure?")){
-      const li = e.target.parentElement;
-      listItem.removeChild(li);
+  //adding li to the items
+  itemList.appendChild(li);
+};
+
+//removeItem function
+function removeItem(e) {
+  if (e.target.classList.contains('delete')) {
+    if (confirm('Are you sure?')) {
+      const deleteItem = e.target.parentElement;
+      itemList.removeChild(deleteItem);
     }
   }
-}
+};
 
-function searchItem(e){
-  const text = e.target.value.toLowerCase();
+//searchItem function
+function searchItem(e) {
+  //getting value from the search
+  const searchItem = e.target.value.toLowerCase();
 
-  //getting values from the list
-  const items = listItem.getElementsByTagName('li');
+  //getting items from the list
+  const items = document.getElementsByTagName('li');
 
+  //since items is in HTMLCOLLECTION, we need to convert it to array
   //converting to array
   Array.from(items).forEach(function (item) {
+    //getting name of the item
     const itemName = item.firstChild.textContent;
-    if (itemName.toLowerCase().indexOf(text) != -1) {
+    
+    //checking if itemname matches to the searchItem
+    if (itemName.toLowerCase().indexOf(searchItem) != -1) {
       item.style.display = 'block';
     } else {
       item.style.display = 'none';
